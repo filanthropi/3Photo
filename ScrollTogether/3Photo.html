@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vertical Exploded View Scroll Animation</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      /* Ensure the page uses the specified dimensions */
+      width: 980px;
+      height: 1830px;
+      margin: 0 auto; /* centers the page horizontally if possible */
+      background: #fff;
+      overflow-y: scroll; /* Ensure vertical scrolling is enabled */
+    }
+    /* Container matching the page dimensions */
+    #vertical-container {
+      position: relative;
+      width: 980px;
+      height: 1830px;
+      overflow: hidden;
+    }
+    /* Styles for the 800px x 800px images */
+    .vertical-img {
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: top 0.2s ease-out;
+    }
+    /* Initial vertical positions (10%, 40%, and 70% of 1830px) */
+    #img1 { top: 10%; }  /* ~183px from top */
+    #img2 { top: 40%; }  /* ~732px from top */
+    #img3 { top: 70%; }  /* ~1281px from top */
+  </style>
+</head>
+<body>
+  <div id="vertical-container">
+    <img id="img1" class="vertical-img" src="https://static.wixstatic.com/media/de080b_1109a5e15a0a497bb9cbcb5055f7ac85~mv2.png" alt="Image 1">
+    <img id="img2" class="vertical-img" src="https://static.wixstatic.com/media/de080b_59b9ffc604404214a4c578ed259d9a42~mv2.png" alt="Image 2">
+    <img id="img3" class="vertical-img" src="https://static.wixstatic.com/media/de080b_f12ff21d369440659caa69c7d18f9fa3~mv2.png" alt="Image 3">
+  </div>
+
+  <script>
+    window.addEventListener('scroll', function() {
+      var container = document.getElementById('vertical-container');
+      var containerHeight = container.offsetHeight; // 1830px
+      // Calculate maximum scroll distance:
+      // (container height minus viewport height) so that progress reaches 1 at the bottom.
+      var maxScroll = containerHeight - window.innerHeight;
+      var scrollY = window.scrollY;
+      var progress = Math.min(scrollY / maxScroll, 1);
+
+      // Calculate the target top position for the centered images.
+      // For an 800px image, centering means: (containerHeight/2 - 400)
+      var targetY = containerHeight / 2 - 400;
+
+      // Animate image 1 (starting from 10% of container height)
+      var img1 = document.getElementById('img1');
+      var startY1 = containerHeight * 0.10;
+      img1.style.top = (startY1 + (targetY - startY1) * progress) + 'px';
+
+      // Animate image 2 (starting from 40% of container height)
+      var img2 = document.getElementById('img2');
+      var startY2 = containerHeight * 0.40;
+      img2.style.top = (startY2 + (targetY - startY2) * progress) + 'px';
+
+      // Animate image 3 (starting from 70% of container height)
+      var img3 = document.getElementById('img3');
+      var startY3 = containerHeight * 0.70;
+      img3.style.top = (startY3 + (targetY - startY3) * progress) + 'px';
+    });
+  </script>
+</body>
+</html>
